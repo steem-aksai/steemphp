@@ -8,7 +8,7 @@ use SteemPHP\SteemHelper;
 
 /**
 * SteemWitness
-* 
+*
 * SteemWitness contains witness functions
 */
 class SteemWitness
@@ -16,14 +16,14 @@ class SteemWitness
 
 	/**
 	 * @var $host
-	 * 
+	 *
 	 * $host will be where our script will connect to fetch the data
 	 */
 	protected $host;
 
 	/**
 	 * @var $client
-	 * 
+	 *
 	 * $client is part of JsonRPC which will be used to connect to the server
 	 */
 	protected $client;
@@ -32,7 +32,7 @@ class SteemWitness
 	 * Initialize the connection to the host
 	 * @param String $host
 	 */
-	public function __construct($host = 'https://steemd.steemit.com')
+	public function __construct($host = 'https://api.steemit.com')
 	{
 		$this->host = trim($host);
 		$this->httpClient = new HttpClient($this->host);
@@ -41,8 +41,9 @@ class SteemWitness
 	}
 
 	/**
+	 * @deprecated
 	 * Get Api number
-	 * @param String $name 
+	 * @param String $name
 	 * @return int
 	 */
 	public function getApi($name)
@@ -61,8 +62,7 @@ class SteemWitness
 	public function getWitnessCount()
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_witness_count', []);
+			return $this->client->call('database_api', 'get_witness_count', []);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -70,15 +70,14 @@ class SteemWitness
 
 	/**
 	 * Get list of witness account names similar to $account
-	 * @param String $account 
-	 * @param int $limit 
+	 * @param String $account
+	 * @param int $limit
 	 * @return array
 	 */
 	public function lookupWitnessAccounts($lowerBoundName, $limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'lookup_witness_accounts', [$lowerBoundName, SteemHelper::filterInt($limit)]);
+			return $this->client->call('database_api', 'lookup_witness_accounts', [$lowerBoundName, SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -91,8 +90,7 @@ class SteemWitness
 	public function getWitnessSchedule()
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_witness_schedule', []);
+			return $this->client->call('database_api', 'get_witness_schedule', []);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -100,15 +98,14 @@ class SteemWitness
 
 	/**
 	 * Get witness information by ID
-	 * @param int|array $accounts 
+	 * @param int|array $accounts
 	 * @return array
 	 */
 	public function getWitnesses($accounts = [])
 	{
 		try {
 			$accounts = !is_array($accounts) ? [$accounts] : $accounts;
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_witnesses', [$accounts]);
+			return $this->client->call('database_api', 'get_witnesses', [$accounts]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -122,8 +119,7 @@ class SteemWitness
 	public function getWitnessByAccount($account)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_witness_by_account', [$account]);
+			return $this->client->call('database_api', 'get_witness_by_account', [$account]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -131,15 +127,14 @@ class SteemWitness
 
 	/**
 	 * Get Witnesses by vote where the names are similar to $account name
-	 * @param String $account 
-	 * @param int $limit 
+	 * @param String $account
+	 * @param int $limit
 	 * @return array
 	 */
 	public function getWitnessesByVote($account, $limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_witnesses_by_vote', [$account, SteemHelper::filterInt($limit)]);
+			return $this->client->call('database_api', 'get_witnesses_by_vote', [$account, SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -152,8 +147,7 @@ class SteemWitness
 	public function getActiveWitnesses()
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_active_witnesses', []);
+			return $this->client->call('database_api', 'get_active_witnesses', []);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -166,8 +160,7 @@ class SteemWitness
 	public function getMinerQueue()
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_miner_queue', []);
+			return $this->client->call('database_api', 'get_miner_queue', []);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}

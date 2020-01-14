@@ -8,7 +8,7 @@ use SteemPHP\SteemHelper;
 
 /**
 * SteemMarket
-* 
+*
 * This Class contains functions for steem market
 */
 class SteemMarket
@@ -16,24 +16,24 @@ class SteemMarket
 
 	/**
 	 * @var $host
-	 * 
+	 *
 	 * $host will be where our script will connect to fetch the data
 	 */
 	protected $host;
 
 	/**
 	 * @var $client
-	 * 
+	 *
 	 * $client is part of JsonRPC which will be used to connect to the server
 	 */
 	protected $client;
 
 	/**
 	 * Initialize the connection to the host
-	 * 
+	 *
 	 * @param      string  $host   The node you want to connect
 	 */
-	public function __construct($host = 'https://steemd.steemit.com')
+	public function __construct($host = 'https://api.steemit.com')
 	{
 		$this->host = trim($host);
 		$this->httpClient = new HttpClient($this->host);
@@ -42,6 +42,8 @@ class SteemMarket
 	}
 
 	/**
+	 * @deprecated
+	 *
 	 * Gets the api number by api $name
 	 *
 	 * @param      sting  $name   The name of the api
@@ -67,8 +69,7 @@ class SteemMarket
 	public function getOrderBook($limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_order_book', [SteemHelper::filterInt($limit)]);
+			return $this->client->call('database_api', 'get_order_book', [SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -84,8 +85,7 @@ class SteemMarket
 	public function getOpenOrders($account)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_open_orders', [$account]);
+			return $this->client->call('database_api', 'get_open_orders', [$account]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -102,8 +102,7 @@ class SteemMarket
 	public function getLiquidityQueue($startAccount, $limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_liquidity_queue', [$startAccount, $limit]);
+			return $this->client->call('database_api', 'get_liquidity_queue', [$startAccount, $limit]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -119,8 +118,7 @@ class SteemMarket
 	public function getOwnerHistory($account)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_owner_history', [$account]);
+			return $this->client->call('database_api', 'get_owner_history', [$account]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -134,8 +132,7 @@ class SteemMarket
 	public function getTicker()
 	{
 		try {
-			$this->api = $this->getApi('market_history_api');
-			return $this->client->call($this->api, 'get_ticker', []);
+			return $this->client->call('market_history_api', 'get_ticker', []);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -157,8 +154,7 @@ class SteemMarket
 		$this->startTime = SteemHelper::filterDate($startTime);
 		$this->endTime = SteemHelper::filterDate($endTime);
 		try {
-			$this->api = $this->getApi('market_history_api');
-			return $this->client->call($this->api, 'get_market_history', [$this->bucket_seconds, $this->startTime, $this->endTime]);
+			return $this->client->call('market_history_api', 'get_market_history', [$this->bucket_seconds, $this->startTime, $this->endTime]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -172,8 +168,7 @@ class SteemMarket
 	public function getMarketHistoryBuckets()
 	{
 		try {
-			$this->api = $this->getApi('market_history_api');
-			return $this->client->call($this->api, 'get_market_history_buckets', []);
+			return $this->client->call('market_history_api', 'get_market_history_buckets', []);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -182,7 +177,7 @@ class SteemMarket
 	/**
 	 * Gets the current order book for the internal SBD:STEEM market.
 	 *
-	 * @param      integer  $limit  The number of orders to have on each side of the order book. 
+	 * @param      integer  $limit  The number of orders to have on each side of the order book.
 	 *                              Maximum is 500
 	 *
 	 * @return     array    The order book from market.
@@ -190,8 +185,7 @@ class SteemMarket
 	public function getOrderBookFromMarket($limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('market_history_api');
-			return $this->client->call($this->api, 'get_order_book', [SteemHelper::filterInt($limit)]);
+			return $this->client->call('market_history_api', 'get_order_book', [SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -208,8 +202,7 @@ class SteemMarket
 	public function getRecentTrades($limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('market_history_api');
-			return $this->client->call($this->api, 'get_recent_trades', [SteemHelper::filterInt($limit)]);
+			return $this->client->call('market_history_api', 'get_recent_trades', [SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -230,8 +223,7 @@ class SteemMarket
 		$this->startTime = SteemHelper::filterDate($startTime);
 		$this->endTime = SteemHelper::filterDate($endTime);
 		try {
-			$this->api = $this->getApi('market_history_api');
-			return $this->client->call($this->api, 'get_trade_history', [$this->startTime, $this->endTime, $this->limit]);
+			return $this->client->call('market_history_api', 'get_trade_history', [$this->startTime, $this->endTime, $this->limit]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -245,8 +237,7 @@ class SteemMarket
 	public function getVolume()
 	{
 		try {
-			$this->api = $this->getApi('market_history_api');
-			return $this->client->call($this->api, 'get_volume', []);
+			return $this->client->call('market_history_api', 'get_volume', []);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}

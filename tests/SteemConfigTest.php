@@ -2,7 +2,9 @@
 
 include (__DIR__).'/../vendor/autoload.php';
 
-class SteemConfigTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SteemConfigTest extends TestCase
 {
 
 	public function testConstant()

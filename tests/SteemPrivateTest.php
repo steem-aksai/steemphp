@@ -2,9 +2,11 @@
 
 include (__DIR__).'/../vendor/autoload.php';
 
-class SteemPrivateTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SteemPrivateTest extends TestCase
 {
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->SteemPrivate = new \SteemPHP\SteemPrivate;
 	}

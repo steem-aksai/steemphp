@@ -15,9 +15,13 @@ trait SteemHelper
 	 */
 	public static function nodes()
 	{
-		return ['https://gtg.steem.house:8090',
+		return [
+				'https://api.steemit.com',
+				'https://anyx.io',
+				"https://steemd.minnowsupport.com",
+				'https://gtg.steem.house:8090',
 				'https://steemd.steemitdev.com',
-				'https://steemd.steemit.com',
+				'https://api.steemit.com',
 				'https://steemd-int.steemit.com',
 				'https://seed.bitcoiner.me',
 				'https://steemd.privex.io',];
@@ -79,7 +83,7 @@ trait SteemHelper
 	 * @param      string  $add    The time to add
 	 *
 	 * @return     date    the current time
-	 * 
+	 *
 	 * To add Years use 'P1Y'
 	 * To add Months use 'P1M'
 	 * To add days use 'P1D'
@@ -119,7 +123,7 @@ trait SteemHelper
 
 	/**
 	 * get estimated account value
-	 * 
+	 *
 	 * NOTE: this code is broken and only calculated the amount of money the user currently has
 	 * do not use until we fix it
 	 *
@@ -258,7 +262,7 @@ trait SteemHelper
 	 */
 	public static function charAt($string, $pos)
 	{
-		return $string{$pos};
+		return $string[$pos];
 	}
 
 	/**
@@ -312,17 +316,17 @@ trait SteemHelper
 		return ($slice === FALSE) ? '' : $slice;
 	}
 
-    /**
-     * PHP port of JavaScript String slice() method taken from BitWasp\Bitcoin
-     *
-     * @param      array    $array   The array
-     * @param      integer  $start   The start
-     * @param      integer  $length  The length
-     *
-     * @return     array    error on failue, result on success
-     */
-    public static function slice($array, $start, $length)
-    {
+	/**
+	 * PHP port of JavaScript String slice() method taken from BitWasp\Bitcoin
+	 *
+	 * @param      array    $array   The array
+	 * @param      integer  $start   The start
+	 * @param      integer  $length  The length
+	 *
+	 * @return     array    error on failue, result on success
+	 */
+	public static function slice($array, $start, $length)
+	{
 		$end = count($array);
 		if ($start > $end || $length > $end) {
 			return ['error' => 'Invalid start or length'];

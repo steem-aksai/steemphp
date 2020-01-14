@@ -8,7 +8,7 @@ use SteemPHP\SteemHelper;
 
 /**
 * SteemAccount
-* 
+*
 * SteemAccount includes basic account functions
 */
 class SteemAccount
@@ -16,24 +16,24 @@ class SteemAccount
 
 	/**
 	 * @var $host
-	 * 
+	 *
 	 * $host will be where our script will connect to fetch the data
 	 */
 	protected $host;
 
 	/**
 	 * @var $client
-	 * 
+	 *
 	 * $client is part of JsonRPC which will be used to connect to the server
 	 */
 	protected $client;
 
 	/**
 	 * Initialize the connection to the host
-	 * 
+	 *
 	 * @param      string  $host   The node you want to connect
 	 */
-	public function __construct($host = 'https://steemd.steemit.com')
+	public function __construct($host = 'https://api.steemit.com')
 	{
 		$this->host = trim($host);
 		$this->httpClient = new HttpClient($this->host);
@@ -42,6 +42,8 @@ class SteemAccount
 	}
 
 	/**
+	 * @deprecated
+	 *
 	 * Gets the api number by api $name
 	 *
 	 * @param      sting  $name   The name of the api
@@ -139,8 +141,8 @@ class SteemAccount
 	public function getAccountReputations($account, $limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('follow_api');
-			$this->return = $this->client->call($this->api, 'get_account_reputations', [$account, SteemHelper::filterInt($limit)]);
+			// $this->api = $this->getApi('follow_api');
+			$this->return = $this->client->call('follow_api', 'get_account_reputations', [$account, SteemHelper::filterInt($limit)]);
 			return $this->return;
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
@@ -174,11 +176,11 @@ class SteemAccount
 	 *
 	 * @return     arra     The following.
 	 */
-	public function getFollowing($account, $limit = 100, $skip = -1)
+	public function getFollowing($account, $limit = 100, $skip = 0)
 	{
 		try {
-			$this->api = $this->getApi('follow_api');
-			return $this->client->call($this->api, 'get_following', [$account, SteemHelper::filterInt($skip), 'blog', SteemHelper::filterInt($limit)]);
+			// $this->api = $this->getApi('follow_api');
+			return $this->client->call('follow_api', 'get_following', [$account, SteemHelper::filterInt($skip), 'blog', SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -193,11 +195,11 @@ class SteemAccount
 	 *
 	 * @return     array    The followers.
 	 */
-	public function getFollowers($account, $limit = 100, $skip = -1)
+	public function getFollowers($account, $limit = 100, $skip = 0)
 	{
 		try {
-			$this->api = $this->getApi('follow_api');
-			return $this->client->call($this->api, 'get_followers', [$account, SteemHelper::filterInt($skip), 'blog', SteemHelper::filterInt($limit)]);
+			// $this->api = $this->getApi('follow_api');
+			return $this->client->call('follow_api', 'get_followers', [$account, SteemHelper::filterInt($skip), 'blog', SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -213,8 +215,8 @@ class SteemAccount
 	public function countFollows($account)
 	{
 		try {
-			$this->api = $this->getApi('follow_api');
-			return $this->client->call($this->api, 'get_follow_count', [$account]);
+			// $this->api = $this->getApi('follow_api');
+			return $this->client->call('follow_api', 'get_follow_count', [$account]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -222,16 +224,16 @@ class SteemAccount
 
 	/**
 	 * Get the estimated account value of $account
-	 * 
-	 * $state = $SteemArticle->getState('/@'.$account.'/transfers')
+	 *
+	 * $state = $SteemPost->getState('/@'.$account.'/transfers')
 	 * $market = $SteemMaket->getOpenOrders($account);
-	 * 
+	 *
 	 * NOTE: This function only gets the estimated amount of money inside the $accounts wallet
-	 * 
+	 *
 	 * @param      array  $state       The state
 	 * @param      array  $openOrders  The open orders
 	 * @param      string  $account     The account
-	 * 
+	 *
 	 * if (success) {
 	 * 		@return     integer  estimated account value
 	 * } else {

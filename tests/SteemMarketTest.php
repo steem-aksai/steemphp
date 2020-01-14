@@ -2,17 +2,19 @@
 
 include (__DIR__).'/../vendor/autoload.php';
 
-class SteemMarketTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SteemMarketTest extends TestCase
 {
-	protected function setUp()
+	protected function setUp(): void
 	{
-		$this->SteemMarket = new \SteemPHP\SteemMarket('https://steemd.steemit.com');
+		$this->SteemMarket = new \SteemPHP\SteemMarket('https://anyx.io');
 	}
 
-	public function testGetApi()
-	{
-		$this->assertInternalType('int', $this->SteemMarket->getApi('login_api'));
-	}
+	// public function testGetApi()
+	// {
+	// 	$this->assertIsInt($this->SteemMarket->getApi('login_api'));
+	// }
 
 	public function testGetOrderBook()
 	{
@@ -23,17 +25,17 @@ class SteemMarketTest extends PHPUnit_Framework_TestCase
 
 	public function testGetOpenOrders()
 	{
-		$this->assertInternalType('array', $this->SteemMarket->getOpenOrders('david'));
+		$this->assertIsArray($this->SteemMarket->getOpenOrders('david'));
 	}
 
 	public function testGetLiquidityQueue()
 	{
-		$this->assertInternalType('array', $this->SteemMarket->getLiquidityQueue('davidk', 5));
+		$this->assertIsArray($this->SteemMarket->getLiquidityQueue('davidk', 5));
 	}
 
 	public function testGetOwnerHistory()
 	{
-		$this->assertInternalType('array', $this->SteemMarket->getOwnerHistory('davidk'));
+		$this->assertIsArray($this->SteemMarket->getOwnerHistory('davidk'));
 	}
 
 	public function testGetTicker()
@@ -43,7 +45,7 @@ class SteemMarketTest extends PHPUnit_Framework_TestCase
 
 	public function testGetMarketHistory()
 	{
-		$this->assertInternalType('array', $this->SteemMarket->getMarketHistory('2017/7/11', '2017/8/11', 60));
+		$this->assertIsArray($this->SteemMarket->getMarketHistory('2017/7/11', '2017/8/11', 60));
 	}
 
 	public function testGetMarketHistoryBuckets()
