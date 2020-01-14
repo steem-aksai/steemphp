@@ -33,7 +33,7 @@ class SteemAccount
 	 *
 	 * @param      string  $host   The node you want to connect
 	 */
-	public function __construct($host = 'https://steemd.steemit.com')
+	public function __construct($host = 'https://api.steemit.com')
 	{
 		$this->host = trim($host);
 		$this->httpClient = new HttpClient($this->host);
@@ -225,7 +225,7 @@ class SteemAccount
 	/**
 	 * Get the estimated account value of $account
 	 *
-	 * $state = $SteemArticle->getState('/@'.$account.'/transfers')
+	 * $state = $SteemPost->getState('/@'.$account.'/transfers')
 	 * $market = $SteemMaket->getOpenOrders($account);
 	 *
 	 * NOTE: This function only gets the estimated amount of money inside the $accounts wallet

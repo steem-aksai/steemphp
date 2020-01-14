@@ -7,33 +7,33 @@ use JsonRPC\HttpClient;
 use SteemPHP\SteemHelper;
 
 /**
-* SteemArticle
-* 
+* SteemPost
+*
 * This Class contains functions for fetching articles from steeemit blockchain
 */
-class SteemArticle
+class SteemPost
 {
 
 	/**
 	 * @var $host
-	 * 
+	 *
 	 * $host will be where our script will connect to fetch the data
 	 */
 	protected $host;
 
 	/**
 	 * @var $client
-	 * 
+	 *
 	 * $client is part of JsonRPC which will be used to connect to the server
 	 */
 	protected $client;
 
 	/**
 	 * Initialize the connection to the host
-	 * 
+	 *
 	 * @param      string  $host   The node you want to connect
 	 */
-	public function __construct($host = 'https://steemd.steemit.com')
+	public function __construct($host = 'https://api.steemit.com')
 	{
 		$this->host = trim($host);
 		$this->httpClient = new HttpClient($this->host);
@@ -42,6 +42,8 @@ class SteemArticle
 	}
 
 	/**
+	 * @deprecated
+	 *
 	 * Gets the api number by api $name
 	 *
 	 * @param      sting  $name   The name of the api
@@ -68,8 +70,7 @@ class SteemArticle
 	public function getTrendingTags($afterTag, $limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_trending_tags', [$afterTag, SteemHelper::filterInt($limit)]);
+			return $this->client->call('database_api', 'get_trending_tags', [$afterTag, SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -86,8 +87,7 @@ class SteemArticle
 	public function getContent($author, $permlink)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_content', [$author, $permlink]);
+			return $this->client->call('database_api', 'get_content', [$author, $permlink]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -104,8 +104,7 @@ class SteemArticle
 	public function getContentReplies($author, $permlink)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_content_replies', [$author, $permlink]);
+			return $this->client->call('database_api', 'get_content_replies', [$author, $permlink]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -125,9 +124,8 @@ class SteemArticle
 	public function getDiscussionsByTrending($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_trending', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_trending', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -136,7 +134,7 @@ class SteemArticle
 	/**
 	 * Gets the list of articles created under the $tag
 	 * Start author and start permlink are for pagination.
-	 * 
+	 *
 	 * @param      string   $tag            The tag
 	 * @param      integer  $limit          The limit
 	 * @param      string   $startAuthor    The start author
@@ -147,9 +145,8 @@ class SteemArticle
 	public function getDiscussionsByCreated($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_created', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_created', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -170,9 +167,8 @@ class SteemArticle
 	public function getDiscussionsByActive($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_active', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_active', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -181,7 +177,7 @@ class SteemArticle
 	/**
 	 * Gets the list of articles which are promoted under the tag $tag
 	 * Start author and start permlink are for pagination
-	 * 
+	 *
 	 * @param      string   $tag            The tag
 	 * @param      integer  $limit          The limit
 	 * @param      string   $startAuthor    The start author
@@ -192,9 +188,8 @@ class SteemArticle
 	public function getDiscussionsByPromoted($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_promoted', [$query]);	
+			return $this->client->call('database_api', 'get_discussions_by_promoted', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -214,9 +209,8 @@ class SteemArticle
 	public function getDiscussionsByCashout($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_cashout', [$query]);	
+			return $this->client->call('database_api', 'get_discussions_by_cashout', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -236,9 +230,8 @@ class SteemArticle
 	public function getDiscussionsByPayout($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_payout', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_payout', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -258,9 +251,8 @@ class SteemArticle
 	public function getDiscussionsByVotes($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_votes', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_votes', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -280,9 +272,8 @@ class SteemArticle
 	public function getDiscussionsByChildren($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_children', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_children', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -302,9 +293,8 @@ class SteemArticle
 	public function getDiscussionsByHot($tag, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $tag, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_hot', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_hot', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -324,9 +314,8 @@ class SteemArticle
 	public function getDiscussionsByFeed($author, $limit = 100, $startAuthor = null, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['tag' => $author, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_feed', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_feed', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -335,7 +324,7 @@ class SteemArticle
 	/**
 	 * Get list of articles written/reblogged by the author $author
 	 * $startPermlink are null by default and the data can be used for pagination
-	 * 
+	 *
 	 * @param      string   $author         The author
 	 * @param      integer  $limit          The limit
 	 * @param      string   $startPermlink  The start permlink
@@ -345,10 +334,9 @@ class SteemArticle
 	public function getDiscussionsByBlog($author, $limit = 100, $startPermlink = null)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$startAuthor = !is_null($startPermlink) ? $author : null;
 			$query = ['tag' => $author, 'limit' => SteemHelper::filterInt($limit), 'start_author' => $startAuthor, 'start_permlink' => $startPermlink];
-			return $this->client->call($this->api, 'get_discussions_by_blog', [$query]);
+			return $this->client->call('database_api', 'get_discussions_by_blog', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -366,9 +354,8 @@ class SteemArticle
 	public function getDiscussionsByComments($author, $permlink, $limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
 			$query = ['start_author' => $author, 'start_permlink' => $permlink, 'limit' => SteemHelper::filterInt($limit)];
-			return $this->client->call($this->api, 'get_discussions_by_comments', [$query]);	
+			return $this->client->call('database_api', 'get_discussions_by_comments', [$query]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -376,7 +363,7 @@ class SteemArticle
 
 	/**
 	 * Get the list of articles written by the $author before the date $beforeDate
-	 * 
+	 *
 	 * @param      string   $author         The author
 	 * @param      string   $startPermlink  The start permlink
 	 * @param      date     $beforeDate     The before date
@@ -387,17 +374,16 @@ class SteemArticle
 	public function getDiscussionsByAuthorBeforeDate($author, $startPermlink, $beforeDate, $limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_discussions_by_author_before_date', [$author, $startPermlink, SteemHelper::filterDate($beforeDate), SteemHelper::filterInt($limit)]);
+			return $this->client->call('database_api', 'get_discussions_by_author_before_date', [$author, $startPermlink, SteemHelper::filterDate($beforeDate), SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
-		}	
+		}
 	}
 
 	/**
 	 * Get list of replies for where the article has recieved the most upvotes for the author $author
-	 * where the article has been posted less than a week ago 
-	 * 
+	 * where the article has been posted less than a week ago
+	 *
 	 * @param      string   $startAuthor    The start author
 	 * @param      string   $startPermlink  The start permlink
 	 * @param      integer  $limit          The limit
@@ -407,8 +393,7 @@ class SteemArticle
 	public function getRepliesByLastUpvote($startAuthor, $startPermlink, $limit = 100)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_replies_by_last_update', [$startAuthor, $startPermlink, SteemHelper::filterInt($limit)]);
+			return $this->client->call('database_api', 'get_replies_by_last_update', [$startAuthor, $startPermlink, SteemHelper::filterInt($limit)]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -425,8 +410,7 @@ class SteemArticle
 	public function getActiveVotes($startAuthor, $startPermlink)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_active_votes', [$startAuthor, $startPermlink]);
+			return $this->client->call('database_api', 'get_active_votes', [$startAuthor, $startPermlink]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -442,8 +426,7 @@ class SteemArticle
 	public function getState($path)
 	{
 		try {
-			$this->api = $this->getApi('database_api');
-			return $this->client->call($this->api, 'get_state', [$path]);
+			return $this->client->call('database_api', 'get_state', [$path]);
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
