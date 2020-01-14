@@ -1,7 +1,7 @@
 # steemphp
 
 
-[![Build Status](https://api.travis-ci.org/davidkevork/steemphp.svg?branch=master)](https://travis-ci.org/davidkevork/steemphp) [![Coverage Status](https://coveralls.io/repos/github/davidkevork/steemphp/badge.svg?branch=master)](https://coveralls.io/github/davidkevork/steemphp?branch=master)
+[![Build Status](https://api.travis-ci.org/steem-aksai/steemphp.svg?branch=master)](https://travis-ci.org/steem-aksai/steemphp) [![Coverage Status](https://coveralls.io/repos/github/steem-aksai/steemphp/badge.svg?branch=master)](https://coveralls.io/github/steem-aksai/steemphp?branch=master)
 
 ## Introduction
 
@@ -12,7 +12,7 @@
 Run the command in your project folder:
 
 ```
-composer require davidkevork/steemphp:dev-master
+composer require steem-aksai/steemphp:dev-master
 ```
 
 Or modify your 'composer.json' to include:
@@ -21,7 +21,7 @@ Or modify your 'composer.json' to include:
 {
   "name": "yourname/projectname",
   "require": {
-    "davidkevork/steemphp": "master"
+    "steem-aksai/steemphp": "master"
   }
 }
 ```
@@ -29,7 +29,7 @@ Or modify your 'composer.json' to include:
 ## Development
 
 ```
-git clone https://github.com/davidkevork/steemphp.git
+git clone https://github.com/steem-aksai/steemphp.git
 cd steemphp
 composer install
 ```
