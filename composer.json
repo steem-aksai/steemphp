@@ -1,16 +1,16 @@
 {
-    "name": "davidkevork/steemphp",
+    "name": "steem-aksai/steemphp",
     "description": "steem php client api",
-    "homepage": "https://github.com/davidkevork/steemphp",
+    "homepage": "https://github.com/steem-aksai/steemphp",
     "license": "MIT",
     "authors": [
         {
-            "name": "David Kevork",
-            "email": "david@davidkevork.me"
+            "name": "Robert Yan",
+            "email": "world_linguist@163.com"
         }
     ],
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.0",
         "fguillot/json-rpc": "^1.2",
         "bitwasp/bitcoin": "v1.0.4"
     },
