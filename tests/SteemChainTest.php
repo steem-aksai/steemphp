@@ -8,12 +8,12 @@ class SteemChainTest extends TestCase
 {
 	protected function setUp(): void
 	{
-		$this->SteemChain = new \SteemPHP\SteemChain('https://api.steemit.com');
+		$this->SteemChain = new \SteemPHP\SteemChain('https://anyx.io');
 	}
 
 	// public function testGetApi()
 	// {
-	// 	$this->assertInternalType('int', $this->SteemChain->getApi('login_api'));
+	// 	$this->assertIsInt($this->SteemChain->getApi('login_api'));
 	// }
 
 	public function testGetVersion()
@@ -23,7 +23,7 @@ class SteemChainTest extends TestCase
 
 	public function testGetAccountCount()
 	{
-		$this->assertInternalType('int', $this->SteemChain->getAccountCount());
+		$this->assertIsInt($this->SteemChain->getAccountCount());
 	}
 
 	public function testGetChainProperties()
@@ -53,7 +53,7 @@ class SteemChainTest extends TestCase
 
 	public function testGetHardforkVersion()
 	{
-		$this->assertInternalType('string', $this->SteemChain->getHardforkVersion());
+		$this->assertIsString($this->SteemChain->getHardforkVersion());
 	}
 
 	public function testGetNextScheduledHardfork()

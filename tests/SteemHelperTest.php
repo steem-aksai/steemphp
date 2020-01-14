@@ -10,27 +10,22 @@ class SteemHelperTest extends TestCase
 
 	public function testToInt()
 	{
-		$this->assertInternalType('string', SteemHelper::toInt('500 STEEM'));
+		$this->assertIsString(SteemHelper::toInt('500 STEEM'));
 	}
 
 	public function testNodes()
 	{
-		$this->assertEquals(['https://gtg.steem.house:8090',
-				'https://steemd.steemitdev.com',
-				'https://api.steemit.com',
-				'https://steemd-int.steemit.com',
-				'https://seed.bitcoiner.me',
-				'https://steemd.privex.io'], SteemHelper::nodes());
+		$this->assertIsArray(SteemHelper::nodes());
 	}
 
 	public function testFilterInt()
 	{
-		$this->assertInternalType('int', SteemHelper::filterInt(500));
+		$this->assertIsInt(SteemHelper::filterInt(500));
 	}
 
 	public function testReputation()
 	{
-		$this->assertInternalType('int', SteemHelper::reputation(3000000));
+		$this->assertIsInt(SteemHelper::reputation(3000000));
 	}
 
 	public function testFilterDate()
@@ -50,7 +45,7 @@ class SteemHelperTest extends TestCase
 
 	public function testVestToSteem()
 	{
-		$this->assertInternalType('float', SteemHelper::vestToSteem('24477.640182 VESTS', '369735200112.175967 VESTS', '178661603.552 STEEM'));
+		$this->assertIsFloat(SteemHelper::vestToSteem('24477.640182 VESTS', '369735200112.175967 VESTS', '178661603.552 STEEM'));
 	}
 
 	public function testContains()

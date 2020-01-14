@@ -14,7 +14,7 @@ class SteemPostTest extends TestCase
 
 	// public function testGetApi()
 	// {
-	// 	$this->assertInternalType('int', $this->SteemPost->getApi('login_api'));
+	// 	$this->assertIsInt($this->SteemPost->getApi('login_api'));
 	// }
 
 	public function testGetTrendingTags()

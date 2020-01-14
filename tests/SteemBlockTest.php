@@ -8,12 +8,12 @@ class SteemBlockTest extends TestCase
 {
 	protected function setUp(): void
 	{
-		$this->SteemBlock = new \SteemPHP\SteemBlock('https://api.steemit.com');
+		$this->SteemBlock = new \SteemPHP\SteemBlock('https://anyx.io');
 	}
 
 	// public function testGetApi()
 	// {
-	// 	$this->assertInternalType('int', $this->SteemBlock->getApi('login_api'));
+	// 	$this->assertIsInt($this->SteemBlock->getApi('login_api'));
 	// }
 
 	public function testGetBlock()
