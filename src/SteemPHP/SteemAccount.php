@@ -114,6 +114,26 @@ class SteemAccount
 	}
 
 	/**
+	 * Gets the accounts information.
+	 *
+	 * @param      string  $accounts  The account names
+	 *
+	 * @return     array   The accounts information
+	 */
+	public function getAccounts($accounts)
+	{
+		try {
+			$this->return = $this->client->call(0, 'get_accounts', [$accounts]);
+			foreach($this->return as $this->index => $this->username) {
+				$this->return[$this->index]['profile'] = json_decode($this->username['json_metadata'], true)['profile'];
+			}
+			return $this->return;
+		} catch (\Exception $e) {
+			return SteemHelper::handleError($e);
+		}
+	}
+
+	/**
 	 * Gets the reputation of an account.
 	 *
 	 * @param      string   $account  The account name

@@ -31,6 +31,13 @@ class SteemAccountTest extends TestCase
 		$this->assertArrayHasKey('name', $this->SteemAccount->getAccount('davidk')[0]);
 	}
 
+	public function testGetAccounts()
+	{
+		$accounts = $this->SteemAccount->getAccounts(['davidk', 'robertyan']);
+		$this->assertArrayHasKey('name', $accounts[0]);
+		$this->assertArrayHasKey('name', $accounts[1]);
+	}
+
 	public function testGetReputation()
 	{
 		$this->assertIsInt($this->SteemAccount->getReputation('davidk'));
