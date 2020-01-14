@@ -21,7 +21,7 @@ trait SteemHelper
 				"https://steemd.minnowsupport.com",
 				'https://gtg.steem.house:8090',
 				'https://steemd.steemitdev.com',
-				'https://steemd.steemit.com',
+				'https://api.steemit.com',
 				'https://steemd-int.steemit.com',
 				'https://seed.bitcoiner.me',
 				'https://steemd.privex.io',];

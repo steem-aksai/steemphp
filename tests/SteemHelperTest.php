@@ -3,8 +3,9 @@
 include (__DIR__).'/../vendor/autoload.php';
 
 use SteemPHP\SteemHelper;
+use PHPUnit\Framework\TestCase;
 
-class SteemHelperTest extends PHPUnit_Framework_TestCase
+class SteemHelperTest extends TestCase
 {
 
 	public function testToInt()
@@ -16,7 +17,7 @@ class SteemHelperTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals(['https://gtg.steem.house:8090',
 				'https://steemd.steemitdev.com',
-				'https://steemd.steemit.com',
+				'https://api.steemit.com',
 				'https://steemd-int.steemit.com',
 				'https://seed.bitcoiner.me',
 				'https://steemd.privex.io'], SteemHelper::nodes());

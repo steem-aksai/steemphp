@@ -2,9 +2,11 @@
 
 include (__DIR__).'/../vendor/autoload.php';
 
+use PHPUnit\Framework\TestCase;
+
 use SteemPHP\SteemHelper;
 
-class SteemHelperFailureTest extends PHPUnit_Framework_TestCase
+class SteemHelperFailureTest extends TestCase
 {
 
 	public function testReputation()
