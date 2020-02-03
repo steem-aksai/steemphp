@@ -112,6 +112,11 @@ class SteemPostTest extends TestCase
 		$this->assertArrayHasKey('props', $this->SteemPost->getState('/@davidk'));
 	}
 
+	public function testComment()
+	{
+		$this->assertIsInt($this->SteemPost->comment("...", "koei", "steempeak-cn", "koei", null, "", "Test with SteemPHP", "{}"));
+	}
+
 }
 
 ?>

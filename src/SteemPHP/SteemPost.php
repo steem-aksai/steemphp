@@ -29,6 +29,13 @@ class SteemPost
 	protected $client;
 
 	/**
+	 * @var $steemBroadcast
+	 *
+	 * $steemBroadcast is the SteemBroadcast object for sending broadcast
+	 */
+	protected $steemBroadcast;
+
+	/**
 	 * Initialize the connection to the host
 	 *
 	 * @param      string  $host   The node you want to connect
@@ -39,6 +46,7 @@ class SteemPost
 		$this->httpClient = new HttpClient($this->host);
 		$this->httpClient->withoutSslVerification();
 		$this->client = new Client($this->host, false, $this->httpClient);
+		$this->steemBroadcast = new SteemBroadcast($this->host);
 	}
 
 	/**
@@ -430,6 +438,41 @@ class SteemPost
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
+	}
+
+	/**
+	 * Send a comment
+	 *
+	 * @param      string  $wif   The private key for the action
+	 * @param      string  $parentAuthor   	The author of the parent comment
+	 * @param      string  $parentPermlink  The permlink of the parent comment
+	 * @param      string  $author   				The author of the comment
+	 * @param      string  $permlink   			The permlink of the comment
+	 * @param      string  $title   				The title of the comment
+	 * @param      string  $body   					The body of the comment
+	 * @param      string  $jsonMetadata   	The json data of the comment
+	 *
+	 * @return     array   The state.
+	 */
+	public function comment($wif, $parentAuthor, $parentPermlink, $author, $permlink, 		$title, $body, $jsonMetadata) {
+		if ($parentAuthor && $parentPermlink && !$permlink) {
+			$permlink = SteemHelper::commentPermlink($parentAuthor, $parentPermlink);
+		}
+		return $this->steemBroadcast->send(array(
+			"extensions" => [],
+			"operations" => [["comment", [
+				'parent_author' => $parentAuthor,
+				'parent_permlink' => $parentPermlink,
+				'author' => $author,
+				'permlink' => $permlink,
+				'title' => $title,
+				'body' => $body,
+				'json_metadata' => $jsonMetadata
+			]]]
+		), array(
+			"posting" => $wif
+		));
+
 	}
 
 }

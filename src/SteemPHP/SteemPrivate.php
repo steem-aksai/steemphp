@@ -4,11 +4,13 @@ namespace SteemPHP;
 
 use SteemPHP\SteemHelper;
 use BitWasp\Buffertools\Buffer;
-use BitWasp\Bitcoin\Key\PrivateKeyFactory;
+use BitWasp\Bitcoin\Key\Factory\PrivateKeyFactory;
+use BitWasp\Bitcoin\Base58;
+use t3ran13\ByteBuffer\ByteBuffer;
 
 /**
 * SteemPrivate
-* 
+*
 * This Class contains functions for steem private key
 */
 class SteemPrivate
@@ -16,7 +18,7 @@ class SteemPrivate
 
 	/**
 	 * @var $prefix
-	 * 
+	 *
 	 * $prefix is the address prefix for public keys
 	 */
 	public $prefix = "STM";
@@ -109,9 +111,47 @@ class SteemPrivate
 	 *
 	 * @return     string  The wif
 	 */
-	public function fromWif($wif)
+	public static function fromWif($wif)
 	{
-		return PrivateKeyFactory::fromWif($wif)->toWif();
+		return (new PrivateKeyFactory())->fromWif($wif)->toWif();
+	}
+
+
+	/**
+	 * @param string $privateWif Private (posting key?) wif
+	 *
+	 * @return string outputs Private key as string of binary
+	 * @throws \Exception
+	 */
+	public static function keyFromWif($privateWif) {
+		// checking wif version
+		$base58 = new Base58();
+		$wifBuffer = new ByteBuffer();
+		$wifBuffer->write($base58->decode($privateWif)->getBinary());
+		$version = $wifBuffer->readInt8(0);
+		if ($version !== 128) {
+				//        assert.equal(0x80, version, `Expected version ${0x80}, instead got ${version}`);
+				throw new \Exception('Expected version 128, instead got ' . $version);
+		}
+
+		// checking WIF checksum
+		$private_key = $wifBuffer->read(0, $wifBuffer->length() - 4);
+		$checksum = $wifBuffer->read($wifBuffer->length() - 4, 4);
+		$new_checksum = hash('sha256', $private_key, true);
+		$new_checksum = hash('sha256', $new_checksum, true);
+		$new_checksum = substr($new_checksum, 0, 4);
+		if ($new_checksum !== $checksum) {
+				throw new \Exception('Invalid WIF key (checksum miss-match)');
+		}
+
+		// getting private_key
+		$private_key = substr($private_key, 1);
+		$length = strlen($private_key);
+		if ($length !== 32) {
+				throw new \Exception('Expecting 32 bytes for private_key, instead got ' . $length);
+		}
+
+		return $private_key;
 	}
 
 }

@@ -12,7 +12,7 @@ class SteemConfigTest extends TestCase
 		$this->assertEquals('0.19.1', \SteemPHP\SteemConfig::STEEMIT_BLOCKCHAIN_VERSION);
 		$this->assertEquals('0.19.1', \SteemPHP\SteemConfig::STEEMIT_BLOCKCHAIN_HARDFORK_VERSION);
 		$this->assertEquals('STM8GC13uCZbP44HzMLV6zPZGwVQ8Nt4Kji8PapsPiNq1BK153XTX', \SteemPHP\SteemConfig::STEEMIT_INIT_PUBLIC_KEY_STR);
-		$this->assertEquals('0', \SteemPHP\SteemConfig::STEEMIT_CHAIN_ID);
+		$this->assertEquals('0000000000000000000000000000000000000000000000000000000000000000', \SteemPHP\SteemConfig::STEEMIT_CHAIN_ID);
 		$this->assertEquals('VESTS', \SteemPHP\SteemConfig::VESTS_SYMBOL);
 		$this->assertEquals('STEEM', \SteemPHP\SteemConfig::STEEM_SYMBOL);
 		$this->assertEquals('SBD', \SteemPHP\SteemConfig::SBD_SYMBOL);

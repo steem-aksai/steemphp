@@ -335,6 +335,21 @@ trait SteemHelper
 		}
 	}
 
+	/**
+	 * Default comment permlink format generated from parent comment
+	 *
+	 * @param      array    $array   The array
+	 * @param      integer  $start   The start
+	 * @param      integer  $length  The length
+	 *
+	 * @return     array    error on failue, result on success
+	 */
+	public static function commentPermlink($parentAuthor, $parentPermlink) {
+			$timeStr = \DateTime::createFromFormat('U.u', microtime(true))->format("Ymd\\tHisv\z");
+			$parentPermlink = preg_replace("/(-\d{8}t\d{9}z)/", "", $parentPermlink);
+      return "re-" . $parentAuthor . "-" . $parentPermlink . "-" . $timeStr;
+    }
+
 }
 
 

@@ -194,7 +194,7 @@ class SteemAccount
 	 * @param      integer  $limit    The limit
 	 * @param      integer  $skip     Skip is the place to start for pagination
 	 *
-	 * @return     arra     The following.
+	 * @return     array     The following.
 	 */
 	public function getFollowing($account, $limit = 100, $skip = 0)
 	{

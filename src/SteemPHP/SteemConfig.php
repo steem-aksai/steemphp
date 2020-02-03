@@ -4,8 +4,8 @@ namespace SteemPHP;
 
 /**
  * SteemConfig
- * 
- * This class contains config details for the steem blockchain pulled from 
+ *
+ * This class contains config details for the steem blockchain pulled from
  * https://github.com/steemit/steem/blob/8cd5f688d75092298bcffaa48a543ed9b01447a6/libraries/protocol/include/steemit/protocol/config.hpp
  */
 class SteemConfig
@@ -13,7 +13,7 @@ class SteemConfig
 	const STEEMIT_BLOCKCHAIN_VERSION = '0.19.1';
 	const STEEMIT_BLOCKCHAIN_HARDFORK_VERSION = self::STEEMIT_BLOCKCHAIN_VERSION;
 	const STEEMIT_INIT_PUBLIC_KEY_STR = "STM8GC13uCZbP44HzMLV6zPZGwVQ8Nt4Kji8PapsPiNq1BK153XTX";
-	const STEEMIT_CHAIN_ID = 0000000000000000000000000000000000000000000000000000000000000000;
+	const STEEMIT_CHAIN_ID = "0000000000000000000000000000000000000000000000000000000000000000";
 	const VESTS_SYMBOL = 'VESTS'; // 91621639411206 VESTS with 6 digits of precision
 	const STEEM_SYMBOL = 'STEEM'; // 84959911236355 STEEM with 3 digits of precision
 	const SBD_SYMBOL = 'SBD'; // 1145197315 STEEM Backed Dollars with 3 digits of precision
