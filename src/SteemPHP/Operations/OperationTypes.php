@@ -10,6 +10,7 @@ class OperationTypes
         ChainOperations::OPERATION_COMMENT_OPTIONS => 19,
         ChainOperations::OPERATION_TRANSFER        => 2,
         ChainOperations::OPERATION_CUSTOM_JSON     => 18,
+        ChainOperations::OPERATION_DELETE_COMMENT  => 17,
     ];
 
     const FIELDS_TYPES = [
@@ -48,6 +49,10 @@ class OperationTypes
             'required_posting_auths' => OperationSerializer::TYPE_SET_STRING,
             'id'                     => OperationSerializer::TYPE_STRING,
             'json'                   => OperationSerializer::TYPE_STRING
+        ],
+        ChainOperations::OPERATION_DELETE_COMMENT     => [
+            'author'                 => OperationSerializer::TYPE_STRING,
+            'permlink'               => OperationSerializer::TYPE_STRING
         ]
     ];
 }

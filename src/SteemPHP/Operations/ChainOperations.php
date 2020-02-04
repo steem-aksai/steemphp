@@ -10,6 +10,7 @@ class ChainOperations
     const OPERATION_TRANSFER        = 'transfer';
     const OPERATION_CUSTOM_JSON     = 'custom_json';
     const OPERATION_CUSTOM          = 'custom';//only for VIZ
+    const OPERATION_DELETE_COMMENT  = 'delete_comment';
 
     /** @var array */
     // protected static $opMap = [];
@@ -22,21 +23,6 @@ class ChainOperations
      */
     public static function getOperationId($operationName)
     {
-        // if (!isset(self::$opMap[$chainName])) {
-        //     if ($chainName === ConnectorInterface::PLATFORM_GOLOS) {
-        //         $op = ChainOperationsGolos::IDS;
-        //     } elseif ($chainName === ConnectorInterface::PLATFORM_STEEMIT) {
-        //         $op = ChainOperationsSteem::IDS;
-        //     } elseif ($chainName === ConnectorInterface::PLATFORM_VIZ) {
-        //         $op = ChainOperationsViz::IDS;
-        //     } elseif ($chainName === ConnectorInterface::PLATFORM_WHALESHARES) {
-        //         $op = ChainOperationsWhaleshares::IDS;
-        //     } else {
-        //         throw new \Exception("There is no operations id's for '{$chainName}'");
-        //     }
-        //     self::$opMap[$chainName] = $op;
-        // }
-
         $ops = OperationTypes::IDS;
 
         if (!isset($ops[$operationName])) {

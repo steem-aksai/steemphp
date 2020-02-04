@@ -2,10 +2,8 @@
 
 namespace SteemPHP;
 
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
 use t3ran13\ByteBuffer\ByteBuffer;
-use SteemPHP\SteemHelper;
+use SteemPHP\SteemClient;
 use SteemPHP\SteemBlock;
 use SteemPHP\SteemChain;
 
@@ -51,21 +49,19 @@ class SteemBroadcast
 	 */
 	public function __construct($host = 'https://anyx.io')
 	{
-		$this->host = trim($host);
-		$this->httpClient = new HttpClient($this->host);
-		$this->httpClient->withoutSslVerification();
-    $this->client = new Client($this->host, false, $this->httpClient);
-    $this->steemBlock = new SteemBlock($this->host);
-    $this->steemChain = new SteemChain($this->host);
+    $this->client = new SteemClient($host);
+    $this->steemBlock = new SteemBlock($host);
+    $this->steemChain = new SteemChain($host);
 	}
 
 	/**
 	 * Send broadcast transaction
 	 *
-	 * @param      string 		 $trx  The transaction ID
+	 * @param      object 		 $trx  The transaction object
 	 * @param      array  		 $privKeys  The keys for signing the transaction
 	 */
-  public function send($tx, $privKeys) {
+	public function send($tx, $privKeys)
+	{
     $transaction = $this->prepareTransaction($tx);
 		$signedTransaction = SteemAuth::signTransaction($transaction, $privKeys);
 		fwrite(STDOUT, print_r("\nBROADCAST:\n", TRUE));
@@ -79,7 +75,8 @@ class SteemBroadcast
 	 *
 	 * @param      string 		 $trx  The transaction ID
 	 */
-  private function prepareTransaction($tx) {
+	private function prepareTransaction($tx)
+	{
     $properties = $this->steemChain->getDynamicGlobalProperties();
 		// Set defaults on the transaction
 		fwrite(STDOUT, print_r($properties, TRUE));
@@ -96,7 +93,52 @@ class SteemBroadcast
       // "ref_block_prefix" => unpack("V*", hex2bin($headBlockId), 4), // unsigned long (always 32 bit, little endian byte order)
       "expiration" => $chainDate
     ), $tx);
+	}
+
+	/**
+	 * Broadcast an operation with a transaction
+	 *
+	 * @param      string 		 $name   The operation name
+	 * @param      array 		   $params   The operation parameters
+	 * @param      array  		 $privKeys    The keys for signing the transaction
+	 */
+	public function execute($name, $params, $privKeys)
+	{
+		return $this->send(array(
+			"extensions" => [],
+			"operations" => [[$name, $params]]
+		), $privKeys);
   }
+
+
+	/**
+	 * Send a comment
+	 *
+	 * @param      string  $wif   The private key for the action
+	 * @param      string  $id   				Identifier for the custom json (max length 32 bytes)
+	 * @param      string  $json   			The json data to put into the custom_json operation
+	 * @param      string  $requiredAuths   	The required auths
+	 * @param      string  $requiredPostingAuths  The required posting auths
+	 *
+	 * @return     array   The response of the action.
+	 */
+	public function customJson($wif, $id, $json, $requiredAuths = [], $requiredPostingAuths = [])
+	{
+		if (gettype($json) != "string") {
+			$json = json_encode($json);
+		}
+		return $this->execute("custom_json", [
+				'wif' => $wif,
+				'required_auths' => $requiredAuths,
+				'required_posting_auths' => $requiredPostingAuths,
+				'id' => $id,
+				'json' => $json
+			], [
+				"posting" => $wif
+			]);
+	}
+
+
 }
 
 ?>

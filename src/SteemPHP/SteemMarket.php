@@ -2,8 +2,7 @@
 
 namespace SteemPHP;
 
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
+use SteemPHP\SteemClient;
 use SteemPHP\SteemHelper;
 
 /**
@@ -35,10 +34,7 @@ class SteemMarket
 	 */
 	public function __construct($host = 'https://api.steemit.com')
 	{
-		$this->host = trim($host);
-		$this->httpClient = new HttpClient($this->host);
-		$this->httpClient->withoutSslVerification();
-		$this->client = new Client($this->host, false, $this->httpClient);
+		$this->client = new SteemClient($host);
 	}
 
 	/**

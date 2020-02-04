@@ -2,8 +2,7 @@
 
 namespace SteemPHP;
 
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
+use SteemPHP\SteemClient;
 use SteemPHP\SteemHelper;
 
 /**
@@ -15,18 +14,18 @@ class SteemAccount
 {
 
 	/**
-	 * @var $host
-	 *
-	 * $host will be where our script will connect to fetch the data
-	 */
-	protected $host;
-
-	/**
 	 * @var $client
 	 *
 	 * $client is part of JsonRPC which will be used to connect to the server
 	 */
 	protected $client;
+
+	/**
+	 * @var $steemBroadcast
+	 *
+	 * $steemBroadcast is the SteemBroadcast object for sending broadcast
+	 */
+	protected $steemBroadcast;
 
 	/**
 	 * Initialize the connection to the host
@@ -35,10 +34,8 @@ class SteemAccount
 	 */
 	public function __construct($host = 'https://api.steemit.com')
 	{
-		$this->host = trim($host);
-		$this->httpClient = new HttpClient($this->host);
-		$this->httpClient->withoutSslVerification();
-		$this->client = new Client($this->host, false, $this->httpClient);
+		$this->client = new SteemClient($host);
+		$this->steemBroadcast = new SteemBroadcast($host);
 	}
 
 	/**
@@ -267,6 +264,44 @@ class SteemAccount
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
+	}
+
+	/**
+	 * Follow an account
+	 *
+	 * @param    string  $wif   The private key for the action
+	 * @param    string  $follower       The follower account
+	 * @param    string  $following      The following account
+	 *
+	 * @return   array    The response message
+	 */
+	public function follow($wif, $follower, $following)
+	{
+		$json = ['follow', [
+			"follower" => $follower,
+			"following" => $following,
+			"what" => ["blog"]
+		]];
+		return $this->steemBroadcast->customJson($wif, 'follow', $json, [], [$follower]);
+	}
+
+	/**
+	 * Unfollow an account
+	 *
+	 * @param    string  $wif   The private key for the action
+	 * @param    string  $follower       The follower account
+	 * @param    string  $following      The following account
+	 *
+	 * @return   array    The response message
+	 */
+	public function unfollow($wif, $follower, $following)
+	{
+		$json = ['follow', [
+			"follower" => $follower,
+			"following" => $following,
+			"what" => []
+		]];
+		return $this->steemBroadcast->customJson($wif, 'follow', $json, [], [$follower]);
 	}
 
 }

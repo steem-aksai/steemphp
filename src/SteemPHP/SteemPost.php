@@ -2,8 +2,7 @@
 
 namespace SteemPHP;
 
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
+use SteemPHP\SteemClient;
 use SteemPHP\SteemHelper;
 
 /**
@@ -13,13 +12,6 @@ use SteemPHP\SteemHelper;
 */
 class SteemPost
 {
-
-	/**
-	 * @var $host
-	 *
-	 * $host will be where our script will connect to fetch the data
-	 */
-	protected $host;
 
 	/**
 	 * @var $client
@@ -42,11 +34,8 @@ class SteemPost
 	 */
 	public function __construct($host = 'https://api.steemit.com')
 	{
-		$this->host = trim($host);
-		$this->httpClient = new HttpClient($this->host);
-		$this->httpClient->withoutSslVerification();
-		$this->client = new Client($this->host, false, $this->httpClient);
-		$this->steemBroadcast = new SteemBroadcast($this->host);
+		$this->client = new SteemClient($host);
+		$this->steemBroadcast = new SteemBroadcast($host);
 	}
 
 	/**
@@ -452,15 +441,14 @@ class SteemPost
 	 * @param      string  $body   					The body of the comment
 	 * @param      string  $jsonMetadata   	The json data of the comment
 	 *
-	 * @return     array   The state.
+	 * @return     array   The response of the action
 	 */
-	public function comment($wif, $parentAuthor, $parentPermlink, $author, $permlink, 		$title, $body, $jsonMetadata) {
+	public function comment($wif, $parentAuthor, $parentPermlink, $author, $permlink, 		$title, $body, $jsonMetadata)
+	{
 		if ($parentAuthor && $parentPermlink && !$permlink) {
 			$permlink = SteemHelper::commentPermlink($parentAuthor, $parentPermlink);
 		}
-		return $this->steemBroadcast->send(array(
-			"extensions" => [],
-			"operations" => [["comment", [
+		return $this->steemBroadcast->execute("comment", [
 				'parent_author' => $parentAuthor,
 				'parent_permlink' => $parentPermlink,
 				'author' => $author,
@@ -468,11 +456,115 @@ class SteemPost
 				'title' => $title,
 				'body' => $body,
 				'json_metadata' => $jsonMetadata
-			]]]
-		), array(
-			"posting" => $wif
-		));
+			], [
+				"posting" => $wif
+			]);
+	}
 
+	/**
+	 * Modify comment options
+	 *
+	 * @param      string  $wif   The private key for the action
+	 * @param      string  $author   				The author of the comment
+	 * @param      string  $permlink   			The permlink of the comment
+	 * @param      string  $maxAcceptedPayout   		The max accepted payout
+	 * @param      string  $percentSteemDollars   	The percentage of Steem Dollars
+	 * @param      string  $allowVotes   	          Allow votes or not
+	 * @param      string  $allowCurationRewards   	Allow curation rewards or not
+	 * @param      string  $extensions   	          The extensions options
+	 *
+	 * @return     array   The response of the action
+	 */
+	public function commentOptions($wif, $author, $permlink, $maxAcceptedPayout, $percentSteemDollars, $allowVotes, $allowCurationRewards, $extensions)
+	{
+		return $this->steemBroadcast->execute("comment_options", [
+				'author' => $author,
+				'permlink' => $permlink,
+				'max_accepted_payout' => $maxAcceptedPayout,
+				'percent_steem_dollars' => $percentSteemDollars,
+				'allow_votes' => $allowVotes,
+				'allow_curation_rewards' => $allowCurationRewards,
+				'extensions' => $extensions
+			], [
+				"posting" => $wif
+			]);
+	}
+
+	/**
+	 * Delete the post
+	 *
+	 * @param      string  $wif   The private key for the action
+	 * @param      string  $author   				The author of the comment
+	 * @param      string  $permlink   			The permlink of the comment
+	 *
+	 * @return   array    The response message
+	 */
+	public function deleteComment($wif, $author, $permlink)
+	{
+		return $this->steemBroadcast->execute("delete_comment", [
+				'author' => $author,
+				'permlink' => $permlink
+			], [
+				"posting" => $wif
+			]);
+	}
+
+	/**
+	 * Vote a post
+	 *
+	 * @param      string  $wif   The private key for the action
+	 * @param      string  $voter   	The account of the voter
+	 * @param      string  $author   				The author of the comment
+	 * @param      string  $permlink   			The permlink of the comment
+	 * @param      string  $weight   				The voting weight, range: [-100, 100]
+	 *
+	 * @return     array   The response of the action
+	 */
+	public function vote($wif, $voter, $author, $permlink, $weight)
+	{
+		return $this->steemBroadcast->execute("vote", [
+				'voter' => $voter,
+				'author' => $author,
+				'permlink' => $permlink,
+				'weight' => $weight * 100
+			], [
+				"posting" => $wif
+			]);
+	}
+
+	/**
+	 * UnVote a post
+	 *
+	 * @param      string  $wif   The private key for the action
+	 * @param      string  $voter   	The account of the voter
+	 * @param      string  $author   				The author of the comment
+	 * @param      string  $permlink   			The permlink of the comment
+	 *
+	 * @return     array   The response of the action
+	 */
+	public function unvote($wif, $voter, $author, $permlink)
+	{
+		return $this->vote($wif, $voter, $author, $permlink, 0);
+	}
+
+	/**
+	 * Reblog a post
+	 *
+	 * @param      string  $wif   The private key for the action
+	 * @param      string  $account         The account who reblogs the post
+	 * @param      string  $author   				The author of the comment
+	 * @param      string  $permlink   			The permlink of the comment
+	 *
+	 * @return   array    The response message
+	 */
+	public function reblog($wif, $account, $author, $permlink)
+	{
+		$json = ['reblog', [
+			"account" => $account,
+			"author" => $author,
+			"permlink" => $permlink
+		]];
+		return $this->steemBroadcast->customJson($wif, 'follow', $json, [], [$account]);
 	}
 
 }

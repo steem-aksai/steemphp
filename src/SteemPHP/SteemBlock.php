@@ -2,8 +2,7 @@
 
 namespace SteemPHP;
 
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
+use SteemPHP\SteemClient;
 use SteemPHP\SteemHelper;
 
 /**
@@ -15,13 +14,6 @@ use SteemPHP\SteemHelper;
 */
 class SteemBlock
 {
-
-	/**
-	 * @var $host
-	 *
-	 * $host will be where our script will connect to fetch the data
-	 */
-	protected $host;
 
 	/**
 	 * @var $client
@@ -37,10 +29,7 @@ class SteemBlock
 	 */
 	public function __construct($host = 'https://api.steemit.com')
 	{
-		$this->host = trim($host);
-		$this->httpClient = new HttpClient($this->host);
-		$this->httpClient->withoutSslVerification();
-		$this->client = new Client($this->host, false, $this->httpClient);
+		$this->client = new SteemClient($host);
 	}
 
 	/**
