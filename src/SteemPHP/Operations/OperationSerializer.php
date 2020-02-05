@@ -16,9 +16,6 @@ class OperationSerializer
     const TYPE_BOOL              = 'bool';
     const TYPE_INT8              = 'int8';
 
-    /** @var array */
-    // protected static $opFieldsMap = [];
-
     /**
      * @param array       $trxParams
      * @param null|Buffer $byteBuffer
@@ -83,11 +80,6 @@ class OperationSerializer
      */
     public static function getOpFieldsTypes($operationName)
     {
-        // if (!isset(self::$opFieldsMap[$chainName])) {
-        //     $op = OperationTypes::FIELDS_TYPES;
-        //     self::$opFieldsMap[$chainName] = $op;
-        // }
-
         $types = OperationTypes::FIELDS_TYPES;
         if (!isset($types[$operationName])) {
             throw new \Exception("There is no information about fields of operation:'{$operationName}'. Please add fields for this operation");

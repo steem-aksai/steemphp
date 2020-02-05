@@ -4,16 +4,13 @@ namespace SteemPHP\Operations;
 
 class ChainOperations
 {
-    const OPERATION_VOTE            = 'vote'; //STEEM/GOLOS/whaleshares
-    const OPERATION_COMMENT         = 'comment'; //STEEM/GOLOS/whaleshares
-    const OPERATION_COMMENT_OPTIONS = 'comment_options'; //STEEM/GOLOS/whaleshares
+    const OPERATION_VOTE            = 'vote';
+    const OPERATION_COMMENT         = 'comment';
+    const OPERATION_COMMENT_OPTIONS = 'comment_options';
     const OPERATION_TRANSFER        = 'transfer';
     const OPERATION_CUSTOM_JSON     = 'custom_json';
-    const OPERATION_CUSTOM          = 'custom';//only for VIZ
+    const OPERATION_CUSTOM          = 'custom';
     const OPERATION_DELETE_COMMENT  = 'delete_comment';
-
-    /** @var array */
-    // protected static $opMap = [];
 
     /**
      * @param string $operationName

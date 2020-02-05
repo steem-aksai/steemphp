@@ -21,12 +21,8 @@ class SteemTransaction
     {
 		$cid = SteemConfig::STEEMIT_CHAIN_ID;
 		// convert transaction into binary
-		// fwrite(STDOUT, print_r($trx, TRUE));
 		$buf = OperationSerializer::serializeTransaction($trx);
-		// fwrite(STDOUT, print_r("\nBINARY:\n", TRUE));
-		// fwrite(STDOUT, print_r($buf, TRUE));
-		// fwrite(STDOUT, print_r("\nBINARY DONE\n", TRUE));
-        return $cid . $buf; //Buffertools::concat($cid, $buf); //Buffer.concat([$cid, $buf])
+        return $cid . $buf;
     }
 
     /**
@@ -44,29 +40,14 @@ class SteemTransaction
         while (true) {
 
             $msg = SteemTransaction::getTransactionMessage($trx);
-
-            // fwrite(STDOUT, print_r("\nMSG: \t\t", TRUE));
-            // fwrite(STDOUT, print_r($msg, TRUE));
-            // fwrite(STDOUT, print_r("\nMSG DONE\n", TRUE));
-
             $msg32Hex = hash('sha256', hex2bin($msg), false);
-            // $privateKeyHex = bin2hex(Auth::PrivateKeyFromWif($privateWif));
             $privateKeyHex = bin2hex(SteemPrivate::keyFromWif($privateWif));
-            // fwrite(STDOUT, print_r("\nPrivate Key: \t\t", TRUE));
-            // fwrite(STDOUT, print_r($privateKeyHex, TRUE));
-            // fwrite(STDOUT, print_r("\nPrivate Key DONE\n", TRUE));
             $key = $ec->keyFromPrivate($privateKeyHex, 'hex');
 
             $signature = $key->sign($msg32Hex, 'hex', ['canonical' => true]);
             /** @var Signature $signature*/
 
             $der = $signature->toDER('hex');
-            // fwrite(STDOUT, print_r("\nSignature:\n", TRUE));
-            // fwrite(STDOUT, print_r($signature, TRUE));
-            // fwrite(STDOUT, print_r("\nSignature DONE\n", TRUE));
-            // fwrite(STDOUT, print_r("\nDer:\n", TRUE));
-            // fwrite(STDOUT, print_r($der, TRUE));
-            // fwrite(STDOUT, print_r("\nDer DONE\n", TRUE));
             if (self::isSignatureCanonical(hex2bin($der))) {
                 break;
             } else {
@@ -95,10 +76,10 @@ class SteemTransaction
             throw new \Exception('Expecting 65 bytes for Tx signature, instead got ' . $length);
         }
 
-        return array(
+        return [
             "sig" => $serializedSig,
             "trx" => $trx
-        );
+        ];
     }
 
     /**
@@ -112,8 +93,6 @@ class SteemTransaction
         $buffer->write($der);
         $lenR = $buffer->readInt8(3);
         $lenS = $buffer->readInt8(5 + $lenR);
-
-        // fwrite(STDOUT, print_r("\nBuffer length: {$lenR} / {$lenS}\n", TRUE));
 
         return $lenR === 32 && $lenS === 32;
     }

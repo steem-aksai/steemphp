@@ -96,14 +96,9 @@ class SteemAuth
 			}
 		}
 
-		fwrite(STDOUT, print_r("\nTRANSACTION:\n", TRUE));
-		fwrite(STDOUT, print_r($trx, TRUE));
-		fwrite(STDOUT, print_r("\nSIGNATURE:\n", TRUE));
-		fwrite(STDOUT, print_r($signatures, TRUE));
-
-		return array_merge($trx, array( // $signed_transaction.toObject(
+		return array_merge($trx, [
 			"signatures" => $signatures
-		));
+		]);
 	}
 
 }

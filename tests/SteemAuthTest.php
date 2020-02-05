@@ -15,7 +15,7 @@ class SteemAuthTest extends TestCase
 
 	public function testSignTransaction()
 	{
-    $transaction = array(
+    $transaction = [
       "ref_block_num" => 53292,
       "ref_block_prefix" => 2936360620,
       "expiration" => "2020-02-03T06:58:36",
@@ -29,7 +29,7 @@ class SteemAuthTest extends TestCase
         "body" => "Test with SteemPHP",
         "json_metadata" => "{}"
       )]]
-    );
+    ];
     $privKeys = array(
       "posting" => "..."
     );

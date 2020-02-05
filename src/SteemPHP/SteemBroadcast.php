@@ -49,9 +49,9 @@ class SteemBroadcast
 	 */
 	public function __construct($host = 'https://anyx.io')
 	{
-    $this->client = new SteemClient($host);
-    $this->steemBlock = new SteemBlock($host);
-    $this->steemChain = new SteemChain($host);
+		$this->client = new SteemClient($host);
+		$this->steemBlock = new SteemBlock($host);
+		$this->steemChain = new SteemChain($host);
 	}
 
 	/**
@@ -64,8 +64,8 @@ class SteemBroadcast
 	{
     $transaction = $this->prepareTransaction($tx);
 		$signedTransaction = SteemAuth::signTransaction($transaction, $privKeys);
-		fwrite(STDOUT, print_r("\nBROADCAST:\n", TRUE));
-		fwrite(STDOUT, print_r($signedTransaction, TRUE));
+		// fwrite(STDOUT, print_r("\nBROADCAST:\n", TRUE));
+		// fwrite(STDOUT, print_r($signedTransaction, TRUE));
     $result = $this->steemBlock->broadcastTransactionSynchronous($signedTransaction);
     return array_merge($result, $signedTransaction);
   }
@@ -79,20 +79,17 @@ class SteemBroadcast
 	{
     $properties = $this->steemChain->getDynamicGlobalProperties();
 		// Set defaults on the transaction
-		fwrite(STDOUT, print_r($properties, TRUE));
     $chainDate = (new \DateTime($properties['time']." +10 minutes"))->format('Y-m-d\TH:i:s');
     $refBlockNum = ($properties['last_irreversible_block_num'] - 1) & 0xFFFF;
 		$block = $this->steemBlock->getBlockHeader($properties['last_irreversible_block_num']);
-		fwrite(STDOUT, print_r($block, TRUE));
 		$headBlockId = $block ? $block['previous'] : '0000000000000000000000000000000000000000';
 		$buf = new ByteBuffer();
     $buf->write(hex2bin($headBlockId));
-    return array_merge(array(
+    return array_merge([
 			"ref_block_num" => $refBlockNum,
 			"ref_block_prefix" => $buf->readInt32lE(4),
-      // "ref_block_prefix" => unpack("V*", hex2bin($headBlockId), 4), // unsigned long (always 32 bit, little endian byte order)
       "expiration" => $chainDate
-    ), $tx);
+		], $tx);
 	}
 
 	/**
