@@ -50,12 +50,12 @@ class SteemAccountTest extends TestCase
 
 	public function testGetFollowing()
 	{
-		$this->assertArrayHasKey('follower', $this->SteemAccount->getFollowing('davidk')[0]);
+		$this->assertIsArray($this->SteemAccount->getFollowing('davidk'));
 	}
 
 	public function testGetFollowers()
 	{
-		$this->assertArrayHasKey('follower', $this->SteemAccount->getFollowers('davidk')[0]);
+		$this->assertIsArray($this->SteemAccount->getFollowers('davidk'));
 	}
 
 	public function testCountFollows()

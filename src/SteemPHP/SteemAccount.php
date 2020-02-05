@@ -197,7 +197,12 @@ class SteemAccount
 	{
 		try {
 			// $this->api = $this->getApi('follow_api');
-			return $this->client->call('follow_api', 'get_following', [$account, SteemHelper::filterInt($skip), 'blog', SteemHelper::filterInt($limit)]);
+			$data = $this->client->call('follow_api', 'get_following', [$account, SteemHelper::filterInt($skip), 'blog', SteemHelper::filterInt($limit)]);
+			$accounts = array();
+			foreach ($data as $r) {
+				$accounts[] = $r['following'];
+			}
+			return $accounts;
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
@@ -216,7 +221,12 @@ class SteemAccount
 	{
 		try {
 			// $this->api = $this->getApi('follow_api');
-			return $this->client->call('follow_api', 'get_followers', [$account, SteemHelper::filterInt($skip), 'blog', SteemHelper::filterInt($limit)]);
+			$data = $this->client->call('follow_api', 'get_followers', [$account, SteemHelper::filterInt($skip), 'blog', SteemHelper::filterInt($limit)]);
+			$accounts = array();
+			foreach ($data as $r) {
+				$accounts[] = $r['follower'];
+			}
+			return $accounts;
 		} catch (\Exception $e) {
 			return SteemHelper::handleError($e);
 		}
