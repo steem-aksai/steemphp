@@ -68,6 +68,16 @@ class SteemAccountTest extends TestCase
 		$this->assertArrayHasKey('account', $this->SteemAccount->getAccountReputations('davidk', 2)[0]);
 	}
 
+	public function testFollow()
+	{
+		$this->assertIsInt($this->SteemAccount->follow("...", "koei", "robertyan"));
+	}
+
+	public function testUnfollow()
+	{
+		$this->assertIsInt($this->SteemAccount->unfollow("...", "koei", "robertyan"));
+	}
+
 }
 
 ?>

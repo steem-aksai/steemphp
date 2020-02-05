@@ -2,13 +2,18 @@
 
 namespace SteemPHP;
 
+use BitWasp\Buffertools\Buffer;
+use BitWasp\Buffertools\Buffertools;
 use SteemPHP\SteemHelper;
 use SteemPHP\SteemPrivate;
 use SteemPHP\SteemPublic;
+use SteemPHP\SteemConfig;
+use SteemPHP\SteemTransaction;
+use SteemPHP\Operations\OperationSerializer;
 
 /**
 * SteemAuth
-* 
+*
 * This Class contains functions for steem auth
 */
 class SteemAuth
@@ -16,7 +21,7 @@ class SteemAuth
 
 	/**
 	 * @var $prefix
-	 * 
+	 *
 	 * $prefix is the address prefix for public keys
 	 */
 	public $prefix = "STM";
@@ -66,6 +71,34 @@ class SteemAuth
 		} else {
 			return implode(" ", explode("/[\t\n\v\f\r ]+/", trim($brain_key)));
 		}
+	}
+
+	/**
+	 * Sign transaction with keys
+	 *
+	 * @param      string 		 $trx  The transaction ID
+	 *
+	 * @return     array  		 $keys  The keys for signing the transaction
+	 */
+	public static function signTransaction($trx, $keys) {
+		$signatures = [];
+		if (array_key_exists('signatures', $trx)) {
+			$signatures = $trx['signatures'];
+		}
+
+		foreach(["posting", "active", "owner"] as $key) {
+			if (array_key_exists($key, $keys)) {
+				// sign with sha256 cryptography
+				$res = SteemTransaction::sign($trx, $keys[$key]);
+				$signatures[] = $res['sig'];
+				$trx = $res['trx'];
+				break;
+			}
+		}
+
+		return array_merge($trx, [
+			"signatures" => $signatures
+		]);
 	}
 
 }

@@ -2,8 +2,7 @@
 
 namespace SteemPHP;
 
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
+use SteemPHP\SteemClient;
 
 /**
 * SteemChain
@@ -12,13 +11,6 @@ use JsonRPC\HttpClient;
 */
 class SteemChain
 {
-
-	/**
-	 * @var $host
-	 *
-	 * $host will be where our script will connect to fetch the data
-	 */
-	protected $host;
 
 	/**
 	 * @var $client
@@ -34,10 +26,7 @@ class SteemChain
 	 */
 	public function __construct($host = 'https://node.steem.ws')
 	{
-		$this->host = trim($host);
-		$this->httpClient = new HttpClient($this->host);
-		$this->httpClient->withoutSslVerification();
-		$this->client = new Client($this->host, false, $this->httpClient);
+		$this->client = new SteemClient($host);
 	}
 
 	/**

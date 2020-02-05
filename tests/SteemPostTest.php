@@ -112,6 +112,31 @@ class SteemPostTest extends TestCase
 		$this->assertArrayHasKey('props', $this->SteemPost->getState('/@davidk'));
 	}
 
+	public function testComment()
+	{
+		$this->assertIsInt($this->SteemPost->comment("...", "koei", "steempeak-cn", "koei", null, "", "Test with SteemPHP", "{}"));
+	}
+
+	public function testDeleteComment()
+	{
+		$this->assertIsInt($this->SteemPost->deleteComment("...", "koei",  "re-koei-steempeak-cn-20200204t091738252z"));
+	}
+
+	public function testVote()
+	{
+		$this->assertIsInt($this->SteemPost->vote("...", "koei", "koei", "re-koei-steempeak-cn-20200203t130104730z", 20));
+	}
+
+	public function testUnVote()
+	{
+		$this->assertIsInt($this->SteemPost->unvote("...", "koei", "koei", "re-koei-steempeak-cn-20200203t130104730z"));
+	}
+
+	public function testReblog()
+	{
+		$this->assertIsInt($this->SteemPost->reblog("...", "koei", "robertyan", "awesome-steem-for-steem-developers"));
+	}
+
 }
 
 ?>
