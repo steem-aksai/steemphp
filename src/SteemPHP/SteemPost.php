@@ -448,6 +448,9 @@ class SteemPost
 		if ($parentAuthor && $parentPermlink && !$permlink) {
 			$permlink = SteemHelper::commentPermlink($parentAuthor, $parentPermlink);
 		}
+		if (gettype($jsonMetadata) != "string") {
+			$jsonMetadata = json_encode($jsonMetadata);
+		}
 		return $this->steemBroadcast->execute("comment", [
 				'parent_author' => $parentAuthor,
 				'parent_permlink' => $parentPermlink,
