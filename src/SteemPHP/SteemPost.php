@@ -445,7 +445,7 @@ class SteemPost
 	 */
 	public function comment($wif, $parentAuthor, $parentPermlink, $author, $permlink, 		$title, $body, $jsonMetadata)
 	{
-		if ($parentAuthor && $parentPermlink && !$permlink) {
+		if (!empty($parentAuthor) && !empty($parentPermlink) && empty($permlink)) {
 			$permlink = SteemHelper::commentPermlink($parentAuthor, $parentPermlink);
 		}
 		if (gettype($jsonMetadata) != "string") {
